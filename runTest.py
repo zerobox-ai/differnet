@@ -16,8 +16,9 @@ import time
 from utils import *
 from localization import export_gradient_maps
 from torch.autograd import Variable
+from sklearn.metrics import roc_curve
 
-def test(model, test_loader):
+def test(model, test_loader, target_threshold):
     print("Running test")
     optimizer = torch.optim.Adam(model.nf.parameters(), lr=c.lr_init, betas=(0.8, 0.8), eps=1e-04, weight_decay=1e-5)
     # score_obs = Score_Observer('AUROC')
@@ -56,10 +57,22 @@ def test(model, test_loader):
     print(f"test_labels={test_labels}, is_anomaly={is_anomaly},anomaly_score={anomaly_score}")
     # score_obs.update(roc_auc_score(is_anomaly, anomaly_score), epoch,
     #                 print_score=c.verbose or epoch == c.meta_epochs - 1)
+    # Code to calculate the accurarcy from Lihang's code
+    is_anomaly_detected = np.array([0 if l < target_threshold else 1 for l in anomaly_score])
 
-    if c.grad_map_viz:
-        print("saving gradient maps...")
-        export_gradient_maps(model, test_loader, optimizer, -1)
+    # calculate test accuracy
+    error_count = 0
+    for i in range(len(is_anomaly)):
+        if is_anomaly[i] != is_anomaly_detected[i]:
+            error_count += 1
+
+    test_accuracy = 1 - float(error_count) / len(is_anomaly)
+
+    print(f"n_transforms_test = {c.n_transforms_test}, target_threshold={target_threshold}, test_accuracy={test_accuracy}")
+
+    # if c.grad_map_viz:
+    #     print("saving gradient maps...")
+    #     export_gradient_maps(model, test_loader, optimizer, -1)
 
 def load_testloader(data_dir_test):
     def target_transform(target):
@@ -100,14 +113,15 @@ def load_testloader(data_dir_test):
 # train_set, test_set = load_datasets(c.dataset_path, c.class_name)
 # _, test_loader = make_dataloaders(train_set, test_set)
 
-test_loader = load_testloader("group15B.avi/")
-# model = torch.load("../zerobox-v2/zerobox_differnet_model.pt", map_location=torch.device('cpu'))
-model = torch.load("models/zerobox_test.pt", map_location=torch.device('cpu'))
+test_loader = load_testloader("zerobox_dataset/zerobox-2009-4-rotated/2-good")
+model = torch.load("../zerobox-v2/zerobox-2009-5.pt", map_location=torch.device('cpu'))
+# model = torch.load("models/zerobox_test.pt", map_location=torch.device('cpu'))
+target_threshold= 1.2587523460388184 
 
 print("starting to run tests after loaded model and test dataset")
 time_start = time.time()
 # model = load_model(c.modelname)
-test(model, test_loader)
+test(model, test_loader, target_threshold)
 time_end = time.time()
 time_c = time_end - time_start  # 运行所花时间
 print("time cost: {:f} s".format(time_c))
