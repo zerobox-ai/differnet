@@ -10,16 +10,15 @@ device = 'cpu' # or 'cuda'
 
 # data settings
 dataset_path = "zerobox_dataset"
-class_name = "zerobox_class"
+class_name = "zerobox-2009-5"
 modelname = "zerobox-2009-5"
 
 img_size = (448, 448)
-# img_size = (480, 270)
 img_dims = [3] + list(img_size)
 add_img_noise = 0.01
 
 # transformation settings
-transf_rotations = False
+transf_rotations = True
 transf_brightness = 0.0
 transf_contrast = 0.0
 transf_saturation = 0.0
@@ -36,7 +35,7 @@ n_feat = 256 * n_scales # do not change except you change the feature extractor
 
 # dataloader parameters
 n_transforms = 1 # number of transformations per sample in training
-n_transforms_test = 1  # number of transformations per sample in testing
+n_transforms_test = 16  # number of transformations per sample in testing
 batch_size = 1 # actual batch size is this value multiplied by n_transforms(_test)
 batch_size_test = 1 # batch_size * n_transforms // n_transforms_test
 
