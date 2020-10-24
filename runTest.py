@@ -93,8 +93,8 @@ def load_testloader(data_dir_test):
             class_idx += 1
 
     augmentative_transforms = []
-    # if c.transf_rotations:
-    #     augmentative_transforms += [transforms.RandomRotation(180)]
+    if c.transf_rotations:
+        augmentative_transforms += [transforms.RandomRotation(180)]
     if c.transf_brightness > 0.0 or c.transf_contrast > 0.0 or c.transf_saturation > 0.0:
         augmentative_transforms += [transforms.ColorJitter(brightness=c.transf_brightness, contrast=c.transf_contrast,
                                                            saturation=c.transf_saturation)]
@@ -110,10 +110,10 @@ def load_testloader(data_dir_test):
     return testloader
 
 ##########################  Main ####################
-train_set, test_set = load_datasets(c.dataset_path, c.class_name)
-_, test_loader = make_dataloaders(train_set, test_set)
+# train_set, test_set = load_datasets(c.dataset_path, c.class_name)
+# _, test_loader = make_dataloaders(train_set, test_set)
 
-# test_loader = load_testloader("zerobox_dataset/zerobox-2009-5/train")
+test_loader = load_testloader("zerobox_dataset/zerobox-2009-5/train")
 model = torch.load("../zerobox-v2/zerobox-2009-5.pt", map_location=torch.device('cpu'))
 # model = torch.load("models/zerobox_test.pt", map_location=torch.device('cpu'))
 target_threshold= 1.2587523460388184 
