@@ -13,8 +13,8 @@ torch.cuda.set_device(0)
 
 # data settings
 dataset_path = "dataset"
-class_name = "Experiment 3.1"
-modelname = "Experiment 3.1_0_0.05_0.15_0.05_0.15"
+class_name = "zerobox-2010-2-zijian"
+modelname = "zerobox-2010-2-zijian"
 
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
@@ -44,14 +44,14 @@ lr_init = 2e-4
 n_feat = 256 * n_scales # do not change except you change the feature extractor
 
 # dataloader parameters
-n_transforms = 4 # number of transformations per sample in training
+n_transforms = 1 # number of transformations per sample in training
 n_transforms_test = 1 # number of transformations per sample in testing
-batch_size = 4 # actual batch size is this value multiplied by n_transforms(_test)
+batch_size = 1 # actual batch size is this value multiplied by n_transforms(_test)
 batch_size_test = 1
 
 # total epochs = meta_epochs * sub_epochs
 # evaluation after <sub_epochs> epochs
-meta_epochs = 3
+meta_epochs = 10
 sub_epochs = 8
 
 # output settings
@@ -61,4 +61,7 @@ hide_tqdm_bar = True
 save_model = True
 save_transformed_image = True
 visualization = True
+
 target_tpr = 0.85
+differnet_model_file = "zerobox-2010-2-zijian_0_0.05_0.15_0.05_0.15.pth"
+visualize_weights = False

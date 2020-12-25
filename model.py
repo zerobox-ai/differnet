@@ -50,9 +50,17 @@ class VAE(nn.Module):
 # todo: VAE + CNN to generate mask, we need to train the CNN's parameter
 
 class MaskDifferNet(nn.Module):
-    def __init__(self):
+    def __init__(self, differnet_model_file=None, freeze_differnet=False):
         super(MaskDifferNet, self).__init__()
-        self.differnet = DifferNet()
+        if differnet_model_file is None:
+            self.differnet = DifferNet()
+        else:
+            self.differnet = load_model(differnet_model_file)
+
+        if freeze_differnet:
+            for param in self.differnet.parameters():
+                param.requires_grad = False
+
         self.nf = self.differnet.nf
         self.vae = VAE()
 
@@ -65,21 +73,25 @@ class MaskDifferNet(nn.Module):
         # loss = loss_function(y[0], x, y[1], y[2])
         mask = torch.relu(torch.sign(torch.sigmoid(y[0]) - 0.5))
         y_img = torch.squeeze(y[0].view(x.shape)).permute(2, 1, 0).cpu().detach().numpy()
-        cv2.imshow('VAE output', y_img)
-        cv2.waitKey(1)
+        if c.visualize_weights:
+            cv2.imshow('VAE output', y_img)
+            cv2.waitKey(1)
+
         # apply mask to the input image.
         # refer to: https://stackoverflow.com/questions/58521595/masking-tensor-of-same-shape-in-pytorch
         mask = mask.view(x.shape)
         x_img = torch.squeeze(x).permute(2, 1, 0).cpu().detach().numpy()
-        cv2.imshow('original input', x_img)
-        cv2.waitKey(1)
+        if c.visualize_weights:
+            cv2.imshow('original input', x_img)
+            cv2.waitKey(1)
 
         z = x * mask.int().float()
         z_img = torch.squeeze(z).permute(2, 1, 0).cpu().detach().numpy()
-        cv2.imshow('original + mask', z_img)
-        cv2.waitKey(1)
+        if c.visualize_weights:
+            cv2.imshow('original + mask', z_img)
+            cv2.waitKey(1)
 
-        output = self.differnet(z)
+        output = self.differnet(y[0].view(x.shape))
 
         return output
 
