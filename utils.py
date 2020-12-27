@@ -1,5 +1,6 @@
 import os
 import torch
+from torch.nn import functional as F
 from torchvision import datasets, transforms
 
 import config as c
@@ -68,6 +69,18 @@ def get_loss(z, jac):
     '''check equation 4 of the paper why this makes sense - oh and just ignore the scaling here'''
     return torch.mean(0.5 * torch.sum(z ** 2, dim=(1,)) - jac) / z.shape[1]
 
+# copy from https://github.com/pytorch/examples/blob/master/vae/main.py
+# Reconstruction + KL divergence losses summed over all elements and batch
+def vae_loss_function(recon_x, x, mu, logvar):
+    BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+
+    # see Appendix B from VAE paper:
+    # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
+    # https://arxiv.org/abs/1312.6114
+    # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
+    KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
+
+    return BCE + KLD
 
 def load_datasets(dataset_path, class_name, test=False):
     '''
