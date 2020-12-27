@@ -49,6 +49,7 @@ class VAE(nn.Module):
 
 # todo: VAE + CNN to generate mask, we need to train the CNN's parameter
 
+
 class MaskDifferNet(nn.Module):
     def __init__(self, differnet_model_file=None, freeze_differnet=False):
         super(MaskDifferNet, self).__init__()
@@ -65,14 +66,14 @@ class MaskDifferNet(nn.Module):
         self.vae = VAE()
 
     def forward(self, x):
-        y = self.vae(x)
+        y, mu, logvar = self.vae(x)
         # y_grayscale = y[0].numpy + y[1].numpy + y[2].numpy
 
         # output a mask. refer to: https://discuss.pytorch.org/t/binary-mask-output-by-network/27458/5
         # x = Variable(x, requires_grad=False)
         # loss = loss_function(y[0], x, y[1], y[2])
-        mask = torch.relu(torch.sign(torch.sigmoid(y[0]) - 0.5))
-        y_img = torch.squeeze(y[0].view(x.shape)).permute(2, 1, 0).cpu().detach().numpy()
+        mask = torch.relu(torch.sign(torch.sigmoid(y) - 0.5))
+        y_img = torch.squeeze(y.view(x.shape)).permute(2, 1, 0).cpu().detach().numpy()
         if c.visualize_weights:
             cv2.imshow('VAE output', y_img)
             cv2.waitKey(1)
@@ -91,9 +92,9 @@ class MaskDifferNet(nn.Module):
             cv2.imshow('original + mask', z_img)
             cv2.waitKey(1)
 
-        output = self.differnet(y[0].view(x.shape))
+        differnet_output = self.differnet(y.view(x.shape))
 
-        return output
+        return y, mu, logvar, differnet_output
 
 def nf_head(input_dim=c.n_feat):
     nodes = list()
