@@ -92,6 +92,7 @@ class MaskDifferNet(nn.Module):
             cv2.waitKey(1)
 
         output = self.differnet(y[0].view(x.shape))
+        # output = self.differnet(x)
 
         return output
 
