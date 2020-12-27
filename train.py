@@ -59,8 +59,13 @@ def train(train_loader, validate_loader):
                 # TODO inspect
                 # inputs += torch.randn(*inputs.shape).cuda() * c.add_img_noise
 
-                y, mu, logvar, z = model(inputs)
-                loss = get_loss(z, model.nf.jacobian(run_forward=False))
+                vae_output, mu, logvar, z = model(inputs)
+                vae_loss = vae_loss_function(vae_output, inputs, mu, logvar)
+                differnet_loss = get_loss(z, model.nf.jacobian(run_forward=False))
+                loss = vae_loss + differnet_loss
+                print("vae_loss: {vae_loss}")
+                print("differnet_loss: {differnet_loss}")
+
                 train_loss.append(t2np(loss))
                 loss.backward()
                 optimizer.step()
