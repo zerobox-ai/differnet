@@ -13,8 +13,8 @@ torch.cuda.set_device(0)
 
 # data settings
 dataset_path = "dataset"
-class_name = "zerobox-2010-2-zijian"
-modelname = "zerobox-2010-2-zijian"
+class_name = "one-product-no-logo-yolo-black"
+modelname = "one-product-no-logo-yolo-black"
 
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
@@ -27,7 +27,7 @@ transf_contrast = 0.0
 transf_saturation = 0.0
 norm_mean, norm_std = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 
-rotation_degree = 0
+rotation_degree = 10
 crop_top = 0.05
 crop_left = 0.15
 crop_bottom = 0.05
@@ -51,8 +51,8 @@ batch_size_test = 1
 
 # total epochs = meta_epochs * sub_epochs
 # evaluation after <sub_epochs> epochs
-meta_epochs = 10
-sub_epochs = 8
+meta_epochs = 100
+sub_epochs = 24
 
 # output settings
 verbose = True
@@ -63,5 +63,6 @@ save_transformed_image = True
 visualization = True
 
 target_tpr = 0.85
-differnet_model_file = "zerobox-2010-2-zijian_0_0.05_0.15_0.05_0.15.pth"
+
+differnet_model_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
 visualize_weights = False

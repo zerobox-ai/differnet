@@ -53,7 +53,8 @@ class VAE(nn.Module):
 class MaskDifferNet(nn.Module):
     def __init__(self, differnet_model_file=None, freeze_differnet=False):
         super(MaskDifferNet, self).__init__()
-        if True: #differnet_model_file is None: # temporarily comment
+        # if True: #differnet_model_file is None: # temporarily comment
+        if differnet_model_file is None:
             self.differnet = DifferNet()
         else:
             self.differnet = load_model(differnet_model_file)
