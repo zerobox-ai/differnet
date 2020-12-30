@@ -72,6 +72,8 @@ def get_loss(z, jac):
 # copy from https://github.com/pytorch/examples/blob/master/vae/main.py
 # Reconstruction + KL divergence losses summed over all elements and batch
 def vae_loss_function(recon_x, x, mu, logvar):
+    # BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
+    # BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), size_average = False)
     BCE = F.binary_cross_entropy(recon_x, x.view(-1, 784), reduction='sum')
 
     # see Appendix B from VAE paper:
