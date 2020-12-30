@@ -75,23 +75,23 @@ class MaskDifferNet(nn.Module):
         # loss = loss_function(y[0], x, y[1], y[2])
         mask = torch.relu(torch.sign(torch.sigmoid(y) - 0.5))
         y_img = torch.squeeze(y.view(x.shape)).permute(2, 1, 0).cpu().detach().numpy()
-        if c.visualize_weights:
-            cv2.imshow('VAE output', y_img)
-            cv2.waitKey(1)
+        #if c.visualize_weights:
+            #cv2.imshow('VAE output', y_img)
+            #cv2.waitKey(1)
 
         # apply mask to the input image.
         # refer to: https://stackoverflow.com/questions/58521595/masking-tensor-of-same-shape-in-pytorch
         mask = mask.view(x.shape)
         x_img = torch.squeeze(x).permute(2, 1, 0).cpu().detach().numpy()
-        if c.visualize_weights:
-            cv2.imshow('original input', x_img)
-            cv2.waitKey(1)
+        #if c.visualize_weights:
+            #cv2.imshow('original input', x_img)
+            #cv2.waitKey(1)
 
         z = x * mask.int().float()
         z_img = torch.squeeze(z).permute(2, 1, 0).cpu().detach().numpy()
-        if c.visualize_weights:
-            cv2.imshow('original + mask', z_img)
-            cv2.waitKey(1)
+        #if c.visualize_weights:
+            #cv2.imshow('original + mask', z_img)
+            #cv2.waitKey(1)
 
         differnet_output = self.differnet(y.view(x.shape))
 
@@ -179,3 +179,6 @@ def save_roc_plot(fpr, tpr, filename):
     dt_string = now.strftime("%Y%m%d%H%M%S")
     # plt.savefig(MODEL_DIR + '/' +filename + '_ROC_' + dt_string + '.jpg')
     plt.savefig(MODEL_DIR + '/' + filename + '_ROC.jpg')
+
+def save_img(img, filename):
+    cv2.imwrite(MODEL_DIR + '/' + filename, img*255)

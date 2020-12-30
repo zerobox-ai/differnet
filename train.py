@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import config as c
 from localization import export_gradient_maps
-from model import DifferNet, save_model, save_weights, save_parameters, save_roc_plot, MaskDifferNet
+from model import *
 from utils import *
 from operator import itemgetter
 import cv2
@@ -61,10 +61,17 @@ def train(train_loader, validate_loader):
 
                 vae_output, mu, logvar, z = model(inputs)
                 vae_loss = vae_loss_function(vae_output, inputs, mu, logvar)
-                differnet_loss = get_loss(z, model.nf.jacobian(run_forward=False))
+                # differnet_loss = get_loss(z, model.nf.jacobian(run_forward=False))
+                differnet_loss = 0
                 loss = vae_loss + differnet_loss
                 # print("vae_loss: {vae_loss}")
                 # print("differnet_loss: {differnet_loss}")
+                if c.visualize_weights and i == 0:
+                    vae_output_img = torch.squeeze(vae_output.view(inputs.shape)).permute(2, 1, 0).cpu().detach().numpy()
+                    save_img(vae_output_img, save_name_pre + "_vae-" + str(epoch) + "-" + str(sub_epoch) + ".jpg")
+
+                    #cv2.imshow('VAE output', vae_output_img)
+                    #cv2.waitKey(1)
 
                 train_loss.append(t2np(loss))
                 loss.backward()

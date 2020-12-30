@@ -52,7 +52,7 @@ batch_size_test = 1
 # total epochs = meta_epochs * sub_epochs
 # evaluation after <sub_epochs> epochs
 meta_epochs = 100
-sub_epochs = 24
+sub_epochs = 8
 
 # output settings
 verbose = True
@@ -65,4 +65,4 @@ visualization = True
 target_tpr = 0.85
 
 differnet_model_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
-visualize_weights = False
+visualize_weights = True
