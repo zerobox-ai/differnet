@@ -1,3 +1,5 @@
+# copy from https://github.com/yunjey/pytorch-tutorial/blob/master/tutorials/03-advanced/variational_autoencoder/main.py
+
 import os
 import torch
 import torch.nn as nn
@@ -107,4 +109,5 @@ for epoch in range(num_epochs):
         # Save the reconstructed images
         out, _, _ = model(x)
         x_concat = torch.cat([x.view(-1, 1, 448, 448), out.view(-1, 1, 448, 448)], dim=3)
+        # x_concat = out.view(-1, 1, 448, 448)
         save_image(x_concat, os.path.join(sample_dir, 'reconst-{}.png'.format(epoch + 1)))
