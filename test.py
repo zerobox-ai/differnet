@@ -13,9 +13,9 @@ import json
 _, _, test_set = load_datasets(c.dataset_path, c.class_name, test=True)
 _, _, test_loader = make_dataloaders(None, None, test_set, test=True)
 
-model = torch.load("models/" + c.modelname + "", map_location=torch.device('cpu'))
+model = torch.load("models/" + c.test_model_filename, map_location=torch.device('cpu'))
 
-with open('models/' + c.modelname + '.json') as jsonfile:
+with open('models/' + c.test_model_config_file) as jsonfile:
     model_parameters = json.load(jsonfile)
 
 time_start = time.time()

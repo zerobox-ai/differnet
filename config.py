@@ -13,8 +13,11 @@ torch.cuda.set_device(0)
 
 # data settings
 dataset_path = "dataset"
-class_name = "Experiment 3.1"
-modelname = "Experiment 3.1_0_0.05_0.15_0.05_0.15"
+class_name = "one-product-no-logo-yolo-black"
+modelname = "one-product-no-logo-yolo-black"
+
+test_model_filename ="one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
+test_model_config_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15_0.9353.json"
 
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
