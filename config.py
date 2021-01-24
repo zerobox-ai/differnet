@@ -14,7 +14,7 @@ torch.cuda.set_device(0)
 # data settings
 dataset_path = "dataset"
 class_name = "Experiment 3.1"
-modelname = "Experiment 3.2_0_0.05_0.15_0.05_0.15"
+modelname = "Experiment 3.2_0_0.05_0.15_0.05_0.15_0_0.00_0.00_0.00_0.00"
 
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
@@ -28,10 +28,10 @@ transf_saturation = 0.0
 norm_mean, norm_std = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 
 rotation_degree = 0
-crop_top = 0.05
-crop_left = 0.15
-crop_bottom = 0.05
-crop_right = 0.15
+crop_top = 0.00
+crop_left = 0.00
+crop_bottom = 0.00
+crop_right = 0.00
 
 # network hyperparameters
 n_scales = 3 # number of scales at which features are extracted, img_size is the highest - others are //2, //4,...

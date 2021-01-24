@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import config as c
 from localization import export_gradient_maps
-from model import DifferNet, save_model, save_weights, save_parameters, save_roc_plot, MaskDifferNet
+from model import DifferNet, save_model, save_weights, save_parameters, save_roc_plot
 from utils import *
 from operator import itemgetter
 import cv2
@@ -61,6 +61,16 @@ def train(train_loader, validate_loader):
                 # inputs += torch.randn(*inputs.shape).cuda() * c.add_img_noise
 
                 z = model(inputs)
+
+                # plot z
+                cv2.imshow('window', z)
+
+                output = model.decoder(z)
+
+                # plot output
+                cv2.imshow('window', output)
+                cv2.waitKey(220)
+
                 loss = get_loss(z, model.nf.jacobian(run_forward=False))
                 train_loss.append(t2np(loss))
                 loss.backward()
