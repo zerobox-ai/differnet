@@ -113,10 +113,10 @@ def load_testloader(data_dir_test):
 # train_set, test_set = load_datasets(c.dataset_path, c.class_name)
 # _, test_loader = make_dataloaders(train_set, test_set)
 
-test_loader = load_testloader("zerobox_dataset/zerobox-2009-5/train")
-model = torch.load("../zerobox-v2/zerobox-2009-5.pt", map_location=torch.device('cpu'))
+test_loader = load_testloader("dataset/group15B.avi.Products/test")
+model = torch.load("models/zerobox-2010-1-black-yolo_0_0.10_0.05_0.10_0.05_0.9980.pth", map_location=torch.device('cpu'))
 # model = torch.load("models/zerobox_test.pt", map_location=torch.device('cpu'))
-target_threshold= 1.2587523460388184 
+target_threshold= 3.5129451751708984 
 
 print("starting to run tests after loaded model and test dataset")
 time_start = time.time()
