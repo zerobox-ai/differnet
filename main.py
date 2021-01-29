@@ -9,8 +9,11 @@ from utils import load_datasets, make_dataloaders
 import time
 import gc
 
-train_set, validate_set, _ = load_datasets(c.dataset_path, c.class_name)
-train_loader, validate_loader, _ = make_dataloaders(train_set, validate_set, None)
+#train_set, validate_set, _ = load_datasets(c.dataset_path, c.class_name)
+# train_loader, validate_loader, _ = make_dataloaders(train_set, validate_set, None)
+train_set, validate_set, _ = load_datasets(c.dataset_path, c.class_name, test=True)
+train_loader, validate_loader, test_set_ = make_dataloaders(train_set, validate_set,testset=test_set, test=True)
+
 
 time_start = time.time()
 model, model_parameters = train(train_loader, validate_loader)

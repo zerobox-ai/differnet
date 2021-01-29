@@ -3,21 +3,21 @@ research purposes. Don't try this code if you are a software engineer.'''
 
 # data extraction settings
 num_videos = 21
-save_cropped_image_to = "dataset/zerobox-2010-1/"
-save_original_image_to = "dataset/zerobox-2010-1-original/"
+save_cropped_image_to = "dataset/zerobox_one_black_product/"
+save_original_image_to = "dataset/zerobox_one_black_product-original/"
 
 # device settings
-device = 'cuda' # 'cuda' or 'cpu'
+device = 'cpu' # 'cuda' or 'cpu'
 import torch
-torch.cuda.set_device(0)
+torch.cuda.set_device(1)
 
 # data settings
 dataset_path = "dataset"
-class_name = "one-product-no-logo-yolo-black"
-modelname = "one-product-no-logo-yolo-black"
+class_name = "zerobox_one_black_product"
+modelname = "zerobox_one_black_product"
 
-test_model_filename ="one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
-test_model_config_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15_0.9353.json"
+# test_model_filename ="one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
+# test_model_config_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15_0.9353.json"
 
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
@@ -54,8 +54,8 @@ batch_size_test = 1
 
 # total epochs = meta_epochs * sub_epochs
 # evaluation after <sub_epochs> epochs
-meta_epochs = 3
-sub_epochs = 8
+meta_epochs = 10
+sub_epochs = 10
 
 # output settings
 verbose = True
@@ -64,4 +64,4 @@ hide_tqdm_bar = True
 save_model = True
 save_transformed_image = True
 visualization = True
-target_tpr = 0.85
+target_tpr = 0.95
