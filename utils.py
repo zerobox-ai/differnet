@@ -9,7 +9,10 @@ import cv2
 import numpy as np
 from datetime import datetime
 
-TRANSFORM_DIR = "./transform/"
+save_name_pre = '{}_{}_{:.2f}_{:.2f}_{:.2f}_{:.2f}'.format(c.modelname, c.rotation_degree,
+                                               c.crop_top, c.crop_left, c.crop_bottom, c.crop_right)
+
+TRANSFORM_DIR = 'transform_' + save_name_pre + '/'
 
 def TransformShow(name="img", wait=100):
     def transform_show(img):

@@ -9,6 +9,14 @@ from utils import load_datasets, make_dataloaders
 import time
 import gc
 
+save_name_pre = '{}_{}_{:.2f}_{:.2f}_{:.2f}_{:.2f}'.format(c.modelname, c.rotation_degree,
+                                               c.crop_top, c.crop_left, c.crop_bottom, c.crop_right)
+
+TRANSFORM_DIR = 'transform_' + save_name_pre + '/'
+
+if not os.path.exists(TRANSFORM_DIR):
+    os.makedirs(TRANSFORM_DIR)
+
 train_set, validate_set, _ = load_datasets(c.dataset_path, c.class_name)
 train_loader, validate_loader, _ = make_dataloaders(train_set, validate_set, None)
 

@@ -13,9 +13,12 @@ import json
 _, _, test_set = load_datasets(c.dataset_path, c.class_name, test=True)
 _, _, test_loader = make_dataloaders(None, None, test_set, test=True)
 
-model = torch.load("models/" + c.modelname + "", map_location=torch.device('cpu'))
+save_name_pre = '{}_{}_{:.2f}_{:.2f}_{:.2f}_{:.2f}'.format(c.modelname, c.rotation_degree,
+                                               c.crop_top, c.crop_left, c.crop_bottom, c.crop_right)
 
-with open('models/' + c.modelname + '.json') as jsonfile:
+model = torch.load("models/" + save_name_pre + ".pth", map_location=torch.device('cpu'))
+
+with open('models/' + save_name_pre + '.json') as jsonfile:
     model_parameters = json.load(jsonfile)
 
 time_start = time.time()

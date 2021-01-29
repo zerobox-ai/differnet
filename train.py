@@ -34,9 +34,9 @@ class Score_Observer:
 
 
 def train(train_loader, validate_loader):
-    model = MaskDifferNet()
+    model = DifferNet()
     optimizer = torch.optim.Adam([{'params': model.nf.parameters()},
-            {'params': model.vae.parameters()}
+            # {'params': model.vae.parameters()}
         ], lr=c.lr_init, betas=(0.8, 0.8), eps=1e-04, weight_decay=1e-5)
     model.to(c.device)
 
