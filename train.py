@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import config as c
 from localization import export_gradient_maps
-from model import DifferNet, save_model, save_weights, save_parameters, save_roc_plot
+from model import DifferNet, save_model, save_weights, save_parameters, save_roc_plot, MaskDifferNet
 from utils import *
 from operator import itemgetter
 import cv2
@@ -35,7 +35,10 @@ class Score_Observer:
 
 def train(train_loader, validate_loader):
     model = DifferNet()
-    optimizer = torch.optim.Adam(model.nf.parameters(), lr=c.lr_init, betas=(0.8, 0.8), eps=1e-04, weight_decay=1e-5)
+    optimizer = torch.optim.Adam([{'params': model.nf.parameters()}
+
+
+        ], lr=c.lr_init, betas=(0.8, 0.8), eps=1e-04, weight_decay=1e-5)
     model.to(c.device)
 
     save_name_pre = '{}_{}_{:.2f}_{:.2f}_{:.2f}_{:.2f}'.format(c.modelname, c.rotation_degree,
@@ -198,8 +201,10 @@ def predict(model, model_parameters, predict_loader):
     with torch.no_grad():
         for i, data in enumerate(predict_loader):
             inputs, labels = preprocess_batch(data)
-            frame = int(predict_loader.dataset.imgs[i][0].split('frame',1)[1].split('-')[0])
-            print(f"i={i}: frame#={frame}, labels={labels.cpu().numpy()[0]}, size of inputs={inputs.size()}")
+            if c.frame_name_is_given:
+                frame = int(predict_loader.dataset.imgs[i][0].split('frame',1)[1].split('-')[0])
+            frame = i
+            #print(f"i={i}: frame#={frame}, labels={labels.cpu().numpy()[0]}, size of inputs={inputs.size()}")
             predictions.append([frame, predict_loader.dataset.imgs[i][0], labels.cpu().numpy()[0], 0, 0])
             z = model(inputs)
             test_z.append(z)
@@ -237,11 +242,31 @@ def predict(model, model_parameters, predict_loader):
 
     test_accuracy = 1 - float(error_count) / len(is_anomaly)
 
+    for i in range(len(predictions)):
+        msg = 'frame: ' + str(i) + '. '
+        if (predictions[i][3] == 1):
+            msg += 'prediction: defective. '
+        else:
+            msg += 'prediction: good. '
+
+        if (predictions[i][2] == 1):
+            msg += 'ground truth: defective. '
+        else:
+            msg += 'ground truth: good. '
+
+        msg += 'anomaly score: ' + str(round(predictions[i][4], 4)) + '. '
+        msg += 'threshold: ' + str(round(target_threshold, 4)) + '. '
+        msg += 'accuracy: ' + str(round(test_accuracy * 100, 2)) + '%'
+
+        print(msg)
+
     # print(f"test_labels={test_labels}, is_anomaly={is_anomaly},anomaly_score={anomaly_score},is_anomaly_detected={is_anomaly_detected}")
     print(f"target_tpr={c.target_tpr}, target_threshold={target_threshold}, test_accuracy={test_accuracy}")
     if c.grad_map_viz:
         print("saving gradient maps...")
         export_gradient_maps(model, predict_loader, optimizer, -1)
+
+
 
     # visualize the prediction result
     if c.visualization:

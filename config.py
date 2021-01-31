@@ -16,9 +16,6 @@ dataset_path = "dataset"
 class_name = "zerobox_one_black_product"
 modelname = "zerobox_one_black_product"
 
-# test_model_filename ="one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15.pth"
-# test_model_config_file = "one-product-no-logo-yolo-black_0_0.05_0.15_0.05_0.15_0.9353.json"
-
 img_size = (448, 448)
 img_dims = [3] + list(img_size)
 add_img_noise = 0.01
@@ -64,4 +61,5 @@ hide_tqdm_bar = True
 save_model = True
 save_transformed_image = True
 visualization = True
-target_tpr = 0.95
+frame_name_is_given = False
+target_tpr = 0.85
