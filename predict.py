@@ -8,7 +8,7 @@ import json
 _, _, predict_set = load_datasets(c.dataset_path, 'predict', test=True)
 _, _, predict_loader = make_dataloaders(None, None, predict_set, test=True)
 
-model = torch.load("models/" + c.modelname + "", map_location=torch.device('cpu'))
+model = torch.load("models/" + c.modelname + ".pth", map_location=torch.device('cpu'))
 
 with open('models/' + c.modelname + '.json') as jsonfile:
     model_parameters = json.load(jsonfile)

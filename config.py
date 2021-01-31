@@ -7,7 +7,7 @@ save_cropped_image_to = "dataset/zerobox_one_black_product/"
 save_original_image_to = "dataset/zerobox_one_black_product-original/"
 
 # device settings
-device = 'cpu' # 'cuda' or 'cpu'
+device = 'cuda' # 'cuda' or 'cpu'
 import torch
 torch.cuda.set_device(1)
 
@@ -60,6 +60,6 @@ grad_map_viz = False
 hide_tqdm_bar = True
 save_model = True
 save_transformed_image = True
-visualization = True
+visualization = False
 frame_name_is_given = False
-target_tpr = 0.85
+target_tpr = 0.76
